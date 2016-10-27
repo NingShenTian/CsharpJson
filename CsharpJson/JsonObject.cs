@@ -1,11 +1,36 @@
-﻿using System;
+﻿//
+// JsonObject.cs
+//
+// Author:
+//       ning <springrain1991@hotmail.com>
+//
+// Copyright (c) 2016 ning
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 namespace CsharpJson
 {
-    public class JsonObject : Base,IEnumerable
+    public sealed class JsonObject : BaseType,IEnumerable
     {
         Dictionary<string,JsonValue> items;
         /// <summary>
@@ -194,6 +219,7 @@ namespace CsharpJson
             {
                 return false;
             }
+
         }
         /// <summary>
         /// Tries the get value.
@@ -221,6 +247,38 @@ namespace CsharpJson
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.items.GetEnumerator();
+        }
+        public override string StringValue()
+        {
+            StringBuilder str = new StringBuilder(this.items.Keys.Count()*30);
+            foreach (KeyValuePair<string,JsonValue>  item in items)
+            {
+                switch(((JsonValue)item.Value).Valuetype)
+                {
+                    case ValueType.BOOL:
+                        str.AppendFormat("\"{0}\":{1}",item.Key,item.Value.ToBool());
+                        break;
+                    case ValueType.INT:
+                        str.AppendFormat("\"{0}\":{1}",item.Key,item.Value.ToInt());
+                        break;
+                    case ValueType.DOUBLE:
+                        str.AppendFormat("\"{0}\":{1}",item.Key,item.Value.ToDouble());
+                        break;
+                    case ValueType.ULONG:
+                        str.AppendFormat("\"{0}\":{1}",item.Key,item.Value.ToUlong());
+                        break;
+                    case ValueType.STRING:
+                        str.AppendFormat("\"{0}\":{1}",item.Key,item.Value.StringValue());
+                        break;
+                    case ValueType.ARRAY:
+                        str.AppendFormat( "\"{0}\":{1}",item.Value.StringValue());
+                        break;
+                    case ValueType.OBJECT:
+                        str.AppendFormat( "\"{0}\":{1}",item.Value.StringValue());
+                        break;
+                }
+            }
+            return str.ToString();
         }
     }
 }

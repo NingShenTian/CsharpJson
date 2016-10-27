@@ -36,8 +36,6 @@
     <Compile Include="JsonValue.cs" />
     <Compile Include="JsonArray.cs" />
     <Compile Include="JsonObject.cs" />
-    <Compile Include="JsonValueExtend.cs" />
-    <Compile Include="Base.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
