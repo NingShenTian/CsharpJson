@@ -1,5 +1,0 @@
-/home/ning/homeDir/workspace/CsJson/CsharpJson/CsharpJson/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
-/home/ning/homeDir/workspace/CsJson/CsharpJson/CsharpJson/bin/Debug/CsJson.dll.mdb
-/home/ning/homeDir/workspace/CsJson/CsharpJson/CsharpJson/bin/Debug/CsJson.dll
-/home/ning/homeDir/workspace/CsJson/CsharpJson/CsharpJson/obj/Debug/CsJson.dll
-/home/ning/homeDir/workspace/CsJson/CsharpJson/CsharpJson/obj/Debug/CsJson.dll.mdb
