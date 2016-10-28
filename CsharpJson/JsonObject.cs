@@ -28,18 +28,24 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 namespace CsharpJson
 {
     public sealed class JsonObject : BaseType,IEnumerable
     {
+        //默认字符串的平均最大长度
+        //为了提高字符串的拼接性能，需要提前预估分配内存，避免StringBuild频繁申请内存
+        private readonly int DEFAULT_MAX_LENGHT = 40;
         Dictionary<string,JsonValue> items;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CsharpJson.JsonObject"/> class.
         /// </summary>
         public JsonObject()
         {
-            this.items=new Dictionary<string,JsonValue>();
+            this.items = new Dictionary<string,JsonValue>();
         }
+
         /// <summary>
         /// Gets or sets the <see cref="CsharpJson.JsonObject"/> with the string key.
         /// </summary>
@@ -69,56 +75,67 @@ namespace CsharpJson
                 }
             }
         }
+
         /// <summary>
         /// Add the specified key and value.
         /// </summary>
         /// <param name="key">Key.</param>
         /// <param name="value">If set to <c>true</c> value.</param>
-        public void Add(string key,bool value)
+        public void Add(string key, bool value)
         {
+            if (key == null)
+            {
+                throw new AggregateException();
+            }
             JsonValue val = new JsonValue(value);
-            this.Add(key, val);
+            this.items.Add(key, val);
         }
+
         /// <summary>
         /// Add the specified key and value.
         /// </summary>
         /// <param name="key">Key.</param>
         /// <param name="value">Value.</param>
-        public void Add(string key,int value)
+        public void Add(string key, int value)
         {
+            if (key == null)
+            {
+                throw new AggregateException();
+            }
             JsonValue val = new JsonValue(value);
-            this.Add(key,val);
+            this.items.Add(key, val);
         }
+
         /// <summary>
         /// Add the specified key and value.
         /// </summary>
         /// <param name="key">Key.</param>
         /// <param name="value">Value.</param>
-        public void Add(string key,double value)
+        public void Add(string key, double value)
         {
-            JsonValue val=new JsonValue(value);
-            this.Add(key,val);
+            if (key == null)
+            {
+                throw new AggregateException();
+            }
+            JsonValue val = new JsonValue(value);
+            this.items.Add(key, val);
         }
+
         /// <summary>
         /// Add the specified key and value.
         /// </summary>
         /// <param name="key">Key.</param>
         /// <param name="value">Value.</param>
-        public void Add(string key,ulong value )
+        public void Add(string key, string value)
         {
+            if (key == null)
+            {
+                throw new AggregateException();
+            }
             JsonValue val = new JsonValue(value);
-            this.Add(key, val);
+            this.items.Add(key, val);
         }
-        /// <summary>
-        /// Add the specified key and value.
-        /// </summary>
-        /// <param name="key">Key.</param>
-        /// <param name="value">Value.</param>
-        public void Add(string key,string value)
-        {
-            JsonValue val = new JsonValue(value);
-            this.Add(key, val);
-        }
+
         /// <summary>
         /// Add the specified key and value.
         /// </summary>
@@ -126,19 +143,29 @@ namespace CsharpJson
         /// <param name="value">Value.</param>
         public void Add(string key, JsonArray value)
         {
+            if (key == null)
+            {
+                throw new AggregateException();
+            }
             JsonValue val = new JsonValue(value);
-            this.Add(key, val);
+            this.items.Add(key, val);
         }
+
         /// <summary>
         /// Add the specified key and value.
         /// </summary>
         /// <param name="key">Key.</param>
         /// <param name="value">Value.</param>
-        public void Add(string key,JsonObject value)
+        public void Add(string key, JsonObject value)
         {
+            if (key == null)
+            {
+                throw new AggregateException();
+            }
             JsonValue val = new JsonValue(value);
-            this.Add(key, val);
+            this.items.Add(key, val);
         }
+
         /// <summary>
         /// Add the specified key and value.
         /// </summary>
@@ -146,6 +173,10 @@ namespace CsharpJson
         /// <param name="value">Value.</param>
         public void Add(string key, JsonValue value)
         {
+            if (key == null)
+            {
+                throw new AggregateException();
+            }
             if (this.items.ContainsKey(key))
             {
                 this.items[key] = value;
@@ -155,6 +186,7 @@ namespace CsharpJson
                 this.items.Add(key, value);
             }
         }
+
         /// <summary>
         /// Gets the count.
         /// </summary>
@@ -166,6 +198,7 @@ namespace CsharpJson
                 return this.items.Count;
             }
         }
+
         /// <summary>
         /// Gets the keys.
         /// </summary>
@@ -177,6 +210,7 @@ namespace CsharpJson
                 return this.items.Keys;
             }
         }
+
         /// <summary>
         /// Gets the values.
         /// </summary>
@@ -188,6 +222,7 @@ namespace CsharpJson
                 return this.items.Values;
             }
         }
+
         /// <summary>
         /// Clear this instance.
         /// </summary>
@@ -195,6 +230,7 @@ namespace CsharpJson
         {
             this.items.Clear();
         }
+
         /// <summary>
         /// if Containses the key return true otherwise false.
         /// </summary>
@@ -204,6 +240,7 @@ namespace CsharpJson
         {
             return this.items.ContainsKey(key);
         }
+
         /// <summary>
         /// Remove the item by specified key.
         /// </summary>
@@ -221,6 +258,7 @@ namespace CsharpJson
             }
 
         }
+
         /// <summary>
         /// Tries the get value.
         /// </summary>
@@ -240,6 +278,7 @@ namespace CsharpJson
                 return false;
             }
         }
+
         /// <summary>
         /// Gets the enumerator.
         /// </summary>
@@ -248,36 +287,38 @@ namespace CsharpJson
         {
             return this.items.GetEnumerator();
         }
-        public override string StringValue()
+
+        public override string ToJsonString()
         {
-            StringBuilder str = new StringBuilder(this.items.Keys.Count()*30);
+            StringBuilder str = new StringBuilder(this.items.Keys.Count() * 2 * DEFAULT_MAX_LENGHT);
+            str.Append("{");
             foreach (KeyValuePair<string,JsonValue>  item in items)
             {
-                switch(((JsonValue)item.Value).Valuetype)
+                switch (((JsonValue)item.Value).Valuetype)
                 {
+                    case ValueType.NULL:
+                        str.AppendFormat("\"{0}\":{1},", item.Key,"null");
+                        break;
                     case ValueType.BOOL:
-                        str.AppendFormat("\"{0}\":{1}",item.Key,item.Value.ToBool());
+                        str.AppendFormat("\"{0}\":{1},", item.Key, item.Value.ToJsonString());
                         break;
-                    case ValueType.INT:
-                        str.AppendFormat("\"{0}\":{1}",item.Key,item.Value.ToInt());
-                        break;
-                    case ValueType.DOUBLE:
-                        str.AppendFormat("\"{0}\":{1}",item.Key,item.Value.ToDouble());
-                        break;
-                    case ValueType.ULONG:
-                        str.AppendFormat("\"{0}\":{1}",item.Key,item.Value.ToUlong());
+                    case ValueType.NUMBER:
+                        str.AppendFormat("\"{0}\":{1},", item.Key, item.Value.ToDouble());
                         break;
                     case ValueType.STRING:
-                        str.AppendFormat("\"{0}\":{1}",item.Key,item.Value.StringValue());
+                        str.AppendFormat("\"{0}\":{1},", item.Key, item.Value.ToJsonString());
                         break;
                     case ValueType.ARRAY:
-                        str.AppendFormat( "\"{0}\":{1}",item.Value.StringValue());
+                        str.AppendFormat("\"{0}\":{1},", item.Key, item.Value.ToJsonString());
                         break;
                     case ValueType.OBJECT:
-                        str.AppendFormat( "\"{0}\":{1}",item.Value.StringValue());
+                        str.AppendFormat("\"{0}\":{1},",item.Key, item.Value.ToJsonString());
                         break;
+
                 }
             }
+            str.Remove(str.Length - 1, 1);
+            str.Append("}");
             return str.ToString();
         }
     }

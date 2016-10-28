@@ -34,12 +34,10 @@ namespace CsharpJson
     {
         NULL = 0x0,
         BOOL = 0x1,
-        DOUBLE = 0x2,
+        NUMBER = 0x2,
         STRING = 0x3,
         ARRAY = 0x4,
         OBJECT = 0x5,
-        ULONG = 0x6,
-        INT =0x07,
         UNDEFINED = 0x80
     }
     /// <summary>
@@ -55,6 +53,7 @@ namespace CsharpJson
         public JsonValue()
         {
             type = ValueType.NULL;
+            this.value = null;
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="CsharpJson.JsonValue"/> class.
@@ -65,14 +64,22 @@ namespace CsharpJson
             type = ValueType.BOOL;
             this.value = new JsonBool(value);
         }
+        public static implicit operator JsonValue(bool value)
+        {
+            return new JsonValue(value);
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="CsharpJson.JsonValue"/> class.
         /// </summary>
         /// <param name="value">Value.</param>
         public JsonValue(int value)
         {
-            type = ValueType.INT;
+            type = ValueType.NUMBER;
             this.value = new JsonDouble(value);
+        }
+        public static implicit operator JsonValue(int value)
+        {
+            return new JsonValue(value);
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="CsharpJson.JsonValue"/> class.
@@ -80,18 +87,15 @@ namespace CsharpJson
         /// <param name="value">Value.</param>
         public JsonValue(double value)
         {
-            type = ValueType.DOUBLE;
+            type = ValueType.NUMBER;
             this.value = new JsonDouble(value);
         }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CsharpJson.JsonValue"/> class.
-        /// </summary>
-        /// <param name="value">Value.</param>
-        public JsonValue(ulong value)
+        public static implicit operator JsonValue(double value)
         {
-            type = ValueType.ULONG;
-            this.value = new JsonUlang(value);
+            return new JsonValue(value);
         }
+
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CsharpJson.JsonValue"/> class.
         /// </summary>
@@ -100,6 +104,10 @@ namespace CsharpJson
         {
             type = ValueType.STRING;
             this.value = new JsonString(value);
+        }
+        public static implicit operator JsonValue(string value)
+        {
+            return new JsonValue(value);
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="CsharpJson.JsonValue"/> class.
@@ -110,6 +118,10 @@ namespace CsharpJson
             type = ValueType.ARRAY;
             this.value =value;
         }
+        public static implicit operator JsonValue (JsonArray value)
+        {
+            return new JsonValue(value);
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="CsharpJson.JsonValue"/> class.
         /// </summary>
@@ -118,6 +130,10 @@ namespace CsharpJson
         {
             type = ValueType.OBJECT;
             this.value=value;
+        }
+        public static implicit operator JsonValue (JsonObject value)
+        {
+            return new JsonValue(value);
         }
         /// <summary>
         /// Is null.
@@ -136,20 +152,12 @@ namespace CsharpJson
             return type == ValueType.BOOL;
         }
         /// <summary>
-        /// Is int.
-        /// </summary>
-        /// <returns><c>true</c>, if int was ised, <c>false</c> otherwise.</returns>
-        public bool isInt()
-        {
-            return type == ValueType.INT;
-        }
-        /// <summary>
         /// Is double.
         /// </summary>
         /// <returns><c>true</c>, if double was ised, <c>false</c> otherwise.</returns>
-        public bool isDouble()
+        public bool isNumber()
         {
-            return type == ValueType.DOUBLE;
+            return type == ValueType.NUMBER;
         }
         /// <summary>
         /// Is string.
@@ -158,14 +166,6 @@ namespace CsharpJson
         public bool isString()
         {
             return type == ValueType.STRING;
-        }
-        /// <summary>
-        /// Is ulong.
-        /// </summary>
-        /// <returns><c>true</c>, if ulong was ised, <c>false</c> otherwise.</returns>
-        public bool isUlong()
-        {
-            return type == ValueType.ULONG;
         }
         /// <summary>
         /// Ises array.
@@ -217,11 +217,11 @@ namespace CsharpJson
         /// <returns>The int.</returns>
         public int ToInt()
         {
-            if (!this.isInt())
+            if (!this.isNumber())
             {
                 throw new FormatException();
             }
-            return ((JsonInt)this.value).Value;
+            return (int)((JsonDouble)this.value).Value;
         }
         /// <summary>
         /// To the double.
@@ -229,7 +229,7 @@ namespace CsharpJson
         /// <returns>The double.</returns>
         public double ToDouble()
         {
-            if (!this.isDouble())
+            if (!this.isNumber())
             {
                 throw new FormatException();
             }
@@ -239,21 +239,9 @@ namespace CsharpJson
         /// Returns a <see cref="System.String"/> that represents the current <see cref="CsharpJson.JsonValue"/>.
         /// </summary>
         /// <returns>A <see cref="System.String"/> that represents the current <see cref="CsharpJson.JsonValue"/>.</returns>
-        public string StringValue()
+        public string ToJsonString()
         {
-            return this.value.StringValue();
-        }
-        /// <summary>
-        /// To the ulong.
-        /// </summary>
-        /// <returns>The ulong.</returns>
-        public ulong ToUlong()
-        {
-            if (!this.isUlong())
-            {
-                throw new FormatException();
-            }
-            return ((JsonUlang)this.value).Value;
+            return this.value.ToJsonString();
         }
         /// <summary>
         /// To the array.
@@ -291,19 +279,24 @@ namespace CsharpJson
             }
             return ((JsonString)this.value).Value;
         }
-
     }
+    /// <summary>
+    /// Base type.
+    /// </summary>
      public class BaseType
     {
         public BaseType()
         {
             //nothing
         }
-        public virtual string StringValue()
+        public virtual string ToJsonString()
         {
             return "";
         }
     }
+    /// <summary>
+    /// Json bool.
+    /// </summary>
      sealed class JsonBool:BaseType
     {
         private bool value;
@@ -313,32 +306,18 @@ namespace CsharpJson
         }
         public bool Value
         {
-            get;
-            set;
+            get{ return this.value;}
+            set{this.value=value;}
         }
-        public override string StringValue()
+        public override string ToJsonString()
         {
-            return value.ToString();
+            return value.ToString().ToLower();
         }
     }
-     sealed class JsonInt:BaseType
-    {
-        private int value;
-        public JsonInt(int val)
-        {
-            this.value=val;
-        }
-        public int Value
-        {
-            get;
-            set;
-        }
-        public override string StringValue()
-        {
-            return value.ToString();
-        }
-    }
-     sealed class JsonDouble :BaseType
+    /// <summary>
+    /// Json double.
+    /// </summary>
+    sealed class JsonDouble :BaseType
     {
         private double value;
         public JsonDouble(double val)
@@ -347,32 +326,18 @@ namespace CsharpJson
         }
         public double Value
         {
-            get;
-            set;
+            get{ return this.value;}
+            set{this.value=value;}
         }
-        public override string StringValue()
+        public override string ToJsonString()
         {
             return value.ToString();
         }
     }
-     sealed class JsonUlang :BaseType
-    {
-        private ulong value;
-        public JsonUlang(ulong val)
-        {
-            this.value=val;
-        }
-        public ulong Value
-        {
-            get;
-            set;
-        }
-        public override string StringValue()
-        {
-            return value.ToString();
-        }
-    }
-     sealed class JsonString :BaseType
+    /// <summary>
+    /// Json string.
+    /// </summary>
+    sealed class JsonString :BaseType
     {
         private string value;
         public JsonString(string val)
@@ -381,10 +346,10 @@ namespace CsharpJson
         }
         public string Value
         {
-            get;
-            set;
+            get{ return this.value;}
+            set{this.value=value;}
         }
-        public override string StringValue()
+        public override string ToJsonString()
         {
             return "\""+value+"\"";
         }

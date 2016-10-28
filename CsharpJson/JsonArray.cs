@@ -27,10 +27,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.Text;
+
 namespace CsharpJson
 {
     public sealed class JsonArray :BaseType,IEnumerable
     {
+        //默认情况下字符串的平均最大长度,这里预估20个字符
+        private readonly int DEFAULT_MAX_LENGHT = 40;
         List<JsonValue> arrylist;
         /// <summary>
         /// Initializes a new instance of the <see cref="CsharpJson.JsonArray"/> class.
@@ -45,7 +48,7 @@ namespace CsharpJson
         /// <param name="arr">Arr.</param>
         public JsonArray(JsonArray arr)
         {
-            for(int i=0;i<arr.Count;++i)
+            for (int i = 0; i < arr.Count; ++i)
             {
                 this.arrylist.Add(arr[i]);
             }
@@ -56,13 +59,13 @@ namespace CsharpJson
         /// <value>The count.</value>
         public int Count
         {
-            get { return this.arrylist.Count;}
+            get { return this.arrylist.Count; }
         }
         /// <summary>
         /// Gets or sets the <see cref="CsharpJson.JsonArray"/> with the specified i.
         /// </summary>
         /// <param name="i">The index.</param>
-        public JsonValue this[int i]
+        public JsonValue this [int i]
         {
             get
             {
@@ -138,22 +141,22 @@ namespace CsharpJson
         /// Add the JsonObject value.
         /// </summary>
         /// <param name="value">Value.</param>
-        public void Add( JsonObject value)
+        public void Add(JsonObject value)
         {
             JsonValue val = new JsonValue(value);
             this.arrylist.Add(val);
         }
-        public void Add(int []values)
+        public void Add(int[]values)
         {
-            for(int i=0;i<values.Length;++i)
+            for (int i = 0; i < values.Length; ++i)
             {
                 JsonValue val = new JsonValue(values[i]);
                 this.arrylist.Add(val);
             }
         }
-        public void Add(double []values)
+        public void Add(double[]values)
         {
-            for(int i=0;i<values.Length;++i)
+            for (int i = 0; i < values.Length; ++i)
             {
                 JsonValue val = new JsonValue(values[i]);
                 this.arrylist.Add(val);
@@ -161,7 +164,7 @@ namespace CsharpJson
         }
         public void Add(string[]values)
         {
-            for(int i=0;i<values.Length;++i)
+            for (int i = 0; i < values.Length; ++i)
             {
                 JsonValue val = new JsonValue(values[i]);
                 this.arrylist.Add(val);
@@ -191,36 +194,36 @@ namespace CsharpJson
         {
             return this.arrylist.GetEnumerator();
         }
-        public override string StringValue()
+        public override string ToJsonString()
         {
-            StringBuilder str = new StringBuilder(this.arrylist.Count *15);
+            StringBuilder str = new StringBuilder(this.arrylist.Count * DEFAULT_MAX_LENGHT);
+            str.Append("[");
             foreach (JsonValue  item in this.arrylist)
             {
-                switch(item.Valuetype)
+                switch (item.Valuetype)
                 {
+                    case ValueType.NULL:
+                        str.AppendFormat("{0},","null");
+                        break;
                     case ValueType.BOOL:
-                        str.AppendFormat("{0},",item.ToBool());
+                        str.AppendFormat("{0},", item.ToJsonString());
                         break;
-                    case ValueType.INT:
-                        str.AppendFormat("{0},",item.ToInt());
-                        break;
-                    case ValueType.DOUBLE:
-                        str.AppendFormat("{0},",item.ToDouble());
-                        break;
-                    case ValueType.ULONG:
-                        str.AppendFormat("{0},",item.ToUlong());
+                    case ValueType.NUMBER:
+                        str.AppendFormat("{0},", item.ToDouble());
                         break;
                     case ValueType.STRING:
-                        str.AppendFormat("{0},",item.StringValue());
+                        str.AppendFormat("{0},", item.ToJsonString());
                         break;
                     case ValueType.ARRAY:
-                        str.AppendFormat("{0},",item.StringValue());
+                        str.AppendFormat("{0},", item.ToJsonString());
                         break;
                     case ValueType.OBJECT:
-                        item.StringValue();
+                        str.AppendFormat("{0},", item.ToJsonString());
                         break;
                 }
             }
+            str.Remove(str.Length - 1, 1);
+            str.Append("]");
             return str.ToString();
         }
     }

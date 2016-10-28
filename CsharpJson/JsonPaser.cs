@@ -29,10 +29,24 @@ namespace CsharpJson
 {
     public sealed class JsonPaser
 	{
-        public JsonPaser()
+        private string jsonString="";
+        public JsonPaser(string jsonstr)
 		{
-            
+            this.jsonString = jsonstr;
 		}
+        public string JsonString
+        {
+            get;
+        }
+        public JsonObject Paser()
+        {
+            return null;
+        }
+        public JsonObject Paser(string jsonstr)
+        {
+            return null;
+        }
+         
 	}
 }
 
