@@ -83,69 +83,6 @@ namespace CsharpJson
                 this.arrylist.Add(value);
             }
         }
-        /// <summary>
-        /// Add the bool value.
-        /// </summary>
-        /// <param name="value">If set to <c>true</c> value.</param>
-        public void Add(bool value)
-        {
-            JsonValue val = new JsonValue(value);
-            this.arrylist.Add(val);
-        }
-        /// <summary>
-        /// Add the int value.
-        /// </summary>
-        /// <param name="value">Value.</param>
-        public void Add(int value)
-        {
-            JsonValue val = new JsonValue(value);
-            this.arrylist.Add(val);
-        }
-        /// <summary>
-        /// Add the double value.
-        /// </summary>
-        /// <param name="value">Value.</param>
-        public void Add(double value)
-        {
-            JsonValue val = new JsonValue(value);
-            this.arrylist.Add(val);
-        }
-        /// <summary>
-        /// Add the ulong value.
-        /// </summary>
-        /// <param name="value">Value.</param>
-        public void Add(ulong value)
-        {
-            JsonValue val = new JsonValue(value);
-            this.arrylist.Add(val);
-        }
-        /// <summary>
-        /// Add the string value.
-        /// </summary>
-        /// <param name="value">Value.</param>
-        public void Add(string value)
-        {
-            JsonValue val = new JsonValue(value);
-            this.arrylist.Add(val);
-        }
-        /// <summary>
-        /// Add the JsonArray value.
-        /// </summary>
-        /// <param name="value">Value.</param>
-        public void Add(JsonArray value)
-        {
-            JsonValue val = new JsonValue(value);
-            this.arrylist.Add(val);
-        }
-        /// <summary>
-        /// Add the JsonObject value.
-        /// </summary>
-        /// <param name="value">Value.</param>
-        public void Add(JsonObject value)
-        {
-            JsonValue val = new JsonValue(value);
-            this.arrylist.Add(val);
-        }
         public void Add(int[]values)
         {
             for (int i = 0; i < values.Length; ++i)
@@ -168,6 +105,13 @@ namespace CsharpJson
             {
                 JsonValue val = new JsonValue(values[i]);
                 this.arrylist.Add(val);
+            }
+        }
+        public void Add(List<string> strlist)
+        {
+            foreach(string iter in strlist)
+            {
+                this.arrylist.Add(iter);
             }
         }
         /// <summary>
@@ -194,6 +138,10 @@ namespace CsharpJson
         {
             return this.arrylist.GetEnumerator();
         }
+        /// <summary>
+        /// paser json array to string.
+        /// </summary>
+        /// <returns>The json string.</returns>
         public override string ToJsonString()
         {
             StringBuilder str = new StringBuilder(this.arrylist.Count * DEFAULT_MAX_LENGHT);
@@ -222,8 +170,7 @@ namespace CsharpJson
                         break;
                 }
             }
-            str.Remove(str.Length - 1, 1);
-            str.Append("]");
+            str.Replace(',', ']', str.Length-1, 1);
             return str.ToString();
         }
     }

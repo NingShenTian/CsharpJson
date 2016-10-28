@@ -94,8 +94,6 @@ namespace CsharpJson
         {
             return new JsonValue(value);
         }
-
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CsharpJson.JsonValue"/> class.
         /// </summary>
