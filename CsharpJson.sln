@@ -3,12 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CshapJson", "CsharpJson\CshapJson.csproj", "{90F775B3-1758-4928-97F2-4F18BFEDD93A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test", "test\test.csproj", "{2ED908C7-7C85-4EAC-B726-8B75E85F79F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2ED908C7-7C85-4EAC-B726-8B75E85F79F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ED908C7-7C85-4EAC-B726-8B75E85F79F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ED908C7-7C85-4EAC-B726-8B75E85F79F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2ED908C7-7C85-4EAC-B726-8B75E85F79F6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{90F775B3-1758-4928-97F2-4F18BFEDD93A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{90F775B3-1758-4928-97F2-4F18BFEDD93A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90F775B3-1758-4928-97F2-4F18BFEDD93A}.Release|Any CPU.ActiveCfg = Release|Any CPU
