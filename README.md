@@ -1,6 +1,6 @@
 C#编写的通用Json解析程序！
-##### 1.添加到工程中：
-　　1. 将JsonObject.cs、JsonArray.cs、JsonValue.cs、JsonPaser.cs 4个文件直接添加到你的项目中
+##### 1.添加到工程中,两种方法：
+　　1. 将JsonObject.cs、JsonArray.cs、JsonValue.cs、JsonPaser.cs 4个文件直接添加到你的项目中</br>
 　　2. 将CsharpJson整个项目直接生成得到CsharpJson.dll通过引用的方式添加到项目中
 ##### 2.具体使用：
 ```C#
