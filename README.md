@@ -1,9 +1,10 @@
-C#编写的通用Json解析程序！
-当前已经实现了序列化，反序列化正在实现还没提交。
+C#编写的通用Json解析库！当前解析功能已经能够正确解析，但如果Json字符串不符合json规则，则会解析出错，这些问题正在修复中。
+
 ##### 1.添加到工程中,两种方法：
 　　1. 将JsonObject.cs、JsonArray.cs、JsonValue.cs、JsonPaser.cs 4个文件直接添加到你的项目中</br>
 　　2. 将CsharpJson整个项目直接生成得到CsharpJson.dll通过引用的方式添加到项目中
 ##### 2.具体使用：
+生成Json：
 ```C#
 using CsharpJson;
 namespace test
@@ -71,4 +72,10 @@ namespace test
         }
     ]
 }
+```
+解析Josn：
+``` C#
+string data = "{\"$circular\" : true,\"$types\" : {\"UnitTests.Tests+o1, UnitTests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\" : \"1\",\"UnitTests.Tests+o2, UnitTests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\" : \"2\",\"UnitTests.Tests+o3, UnitTests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\" : \"3\"},\"$type\" : \"1\",\"o1int\" : 1,\"o2obj\" : {\"$type\" : \"2\",\"o2int\" : 2,\"parent\" : {\"$i\" : 1}},\"child\" : {\"$type\" : \"3\",\"o3int\" : 3,\"child\" : {\"$i\" : 2}}}";
+JsonPaser paser = new JsonPaser();
+JsonValue value= paser.Paser(data);
 ```
