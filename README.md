@@ -75,7 +75,26 @@ namespace test
 ```
 解析Josn：
 ``` C#
-string data = "{\"$circular\" : true,\"$types\" : {\"UnitTests.Tests+o1, UnitTests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\" : \"1\",\"UnitTests.Tests+o2, UnitTests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\" : \"2\",\"UnitTests.Tests+o3, UnitTests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\" : \"3\"},\"$type\" : \"1\",\"o1int\" : 1,\"o2obj\" : {\"$type\" : \"2\",\"o2int\" : 2,\"parent\" : {\"$i\" : 1}},\"child\" : {\"$type\" : \"3\",\"o3int\" : 3,\"child\" : {\"$i\" : 2}}}";
+string data = "{\"中国\": \"china\",\"北京\": true,\"上海\": 123}";
 JsonPaser paser = new JsonPaser();
 JsonValue value= paser.Paser(data);
+if(value.isObject())
+   {
+       JsonObject jsobj=value.ToObject();
+       foreach(string key in jsobj.Keys)
+       {
+           switch(jsobj[key].Valuetype)
+           {
+               case JsonType.BOOL:
+                            Console.WriteLine("key={0},value={1}",key,jsobj[key].ToBool());
+                            break;
+                        case JsonType.NUMBER:
+                            Console.WriteLine("key={0},value={1}",key,jsobj[key].ToInt());
+                            break;
+                        case JsonType.STRING:
+                            Console.WriteLine("key={0},value={1}",key,jsobj[key].ToStr());
+                            break;
+                    }
+                }
+            }
 ```
