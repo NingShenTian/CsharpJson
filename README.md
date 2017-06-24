@@ -1,4 +1,5 @@
-C#编写的通用Json解析库！当前解析功能已经能够正确解析，但如果Json字符串不符合json规则，则会解析出错，这些问题正在修复中。
+C#编写的通用Json解析库！如果发现bug请第一时间通知作者修复，作者邮箱：
+springrain1991@hotmail.com
 
 ##### 1.添加到工程中,两种方法：
 　　1. 将JsonObject.cs、JsonArray.cs、JsonValue.cs、JsonPaser.cs 4个文件直接添加到你的项目中</br>
