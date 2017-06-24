@@ -2,8 +2,9 @@ C#编写的通用Json解析库！如果发现bug请第一时间通知作者修�
 springrain1991@hotmail.com
 
 ##### 1.添加到工程中,两种方法：
-　　1. 将JsonObject.cs、JsonArray.cs、JsonValue.cs、JsonPaser.cs 4个文件直接添加到你的项目中</br>
-　　2. 将CsharpJson整个项目直接生成得到CsharpJson.dll通过引用的方式添加到项目中
+　　1. 将JsonObject.cs、JsonArray.cs、JsonValue.cs、JsonDocument.cs 4个文件直接添加到你的项目中</br>
+　　2. 将CsharpJson整个项目直接生成得到CsharpJson.dll通过引用的方式添加到项目中</br>
+　　3. 本Json库支持所有的C#版本包括Linux MonoDevelop，事实上该项目是在Ubuntu Linux上用MonoDevelop和WIndows下VS交替完成的。
 ##### 2.具体使用：
 生成Json：
 ``` C#
