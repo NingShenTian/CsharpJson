@@ -18,20 +18,25 @@
 //
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-using System;
 using System.Collections.Generic;
 using System.Collections;
-using System.Text;
 
 namespace CsharpJson
 {
-    public sealed class JsonArray :BaseType,IEnumerable
+    /// <summary>
+    /// Json array.
+    /// Json的Array型数据，其元素是列表型
+    /// </summary>
+    public sealed class JsonArray : BaseType, IEnumerable
     {
-        //默认情况下字符串的平均最大长度,这里预估20个字符
-        private readonly int DEFAULT_MAX_LENGHT = 40;
+        /// <summary>
+        /// The arrylist.
+        /// 保存列表型数据
+        /// </summary>
         private List<JsonValue> arrylist;
         /// <summary>
-        /// Initializes a new instance of the <see cref="CsharpJson.JsonArray"/> class.
+        /// Initializes a new instance of the<see cref="CsharpJson.JsonArray"/> class.
+        /// 初始化一个新的<see cref="CsharpJson.JsonArray"/>类实例
         /// </summary>
         public JsonArray()
         {
@@ -39,6 +44,7 @@ namespace CsharpJson
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="CsharpJson.JsonArray"/> class.
+        /// 初始化一个新的 <see cref="CsharpJson.JsonArray"/>类的实例
         /// </summary>
         /// <param name="arr">Arr.</param>
         public JsonArray(JsonArray arr)
@@ -50,6 +56,7 @@ namespace CsharpJson
         }
         /// <summary>
         /// Gets the count.
+        /// 获取元素数量
         /// </summary>
         /// <value>The count.</value>
         public int Count
@@ -58,13 +65,14 @@ namespace CsharpJson
         }
         /// <summary>
         /// Gets or sets the <see cref="CsharpJson.JsonArray"/> with the specified i.
+        /// 获取或设置指定索引处的<see cref="CsharpJson.JsonArray"/>类的实例
         /// </summary>
         /// <param name="i">The index.</param>
-        public JsonValue this [int i]
+        public JsonValue this[int i]
         {
             get
             {
-                if (i >= this.arrylist.Count)
+                if (i >= this.arrylist.Count || i < 0)
                 {
                     return null;
                 }
@@ -75,42 +83,84 @@ namespace CsharpJson
             }
             set
             {
-                this.arrylist.Add(value);
+                if (value == null)
+                {
+                    this.arrylist.Add(new JsonValue());
+                }
+                else
+                {
+                    this.arrylist.Add(value);
+                }
             }
         }
-        public void Add(int[]values)
+        /// <summary>
+        /// Add the specified values.
+        /// 添加指定的int数组
+        /// </summary>
+        /// <param name="values">Values.</param>
+        public void Add(int[] values)
         {
+            if (values==null)
+            {
+                return;
+            }
             for (int i = 0; i < values.Length; ++i)
             {
-                JsonValue val = new JsonValue(values[i]);
-                this.arrylist.Add(val);
+                this.arrylist.Add(values[i]);
             }
         }
-        public void Add(double[]values)
+        /// <summary>
+        /// Add the specified values.
+        /// 添加指定的double数组
+        /// </summary>
+        /// <param name="values">Values.</param>
+        public void Add(double[] values)
         {
+            if (values == null)
+            {
+                return;
+            }
             for (int i = 0; i < values.Length; ++i)
             {
-                JsonValue val = new JsonValue(values[i]);
-                this.arrylist.Add(val);
+
+                this.arrylist.Add(values[i]);
             }
         }
-        public void Add(string[]values)
+        /// <summary>
+        /// Add the specified values.
+        /// 添加指定的string数组
+        /// </summary>
+        /// <param name="values">Values.</param>
+        public void Add(string[] values)
         {
+            if (values == null)
+            {
+                return;
+            }
             for (int i = 0; i < values.Length; ++i)
             {
-                JsonValue val = new JsonValue(values[i]);
-                this.arrylist.Add(val);
+                this.arrylist.Add(new JsonValue(values[i]));
             }
         }
+        /// <summary>
+        /// Add the specified strlist.
+        /// 添加指定的string类型List
+        /// </summary>
+        /// <param name="strlist">Strlist.</param>
         public void Add(List<string> strlist)
         {
-            foreach(string iter in strlist)
+            if (strlist == null)
             {
-                this.arrylist.Add(iter);
+                return;
+            }
+            foreach (string iter in strlist)
+            {
+                this.arrylist.Add(new JsonValue(iter));
             }
         }
         /// <summary>
         /// Add the JsonValue value.
+        /// 添加JsonValue值
         /// </summary>
         /// <param name="value">Value.</param>
         public void Add(JsonValue value)
@@ -119,6 +169,7 @@ namespace CsharpJson
         }
         /// <summary>
         /// if Contains the JsonValue item return true otherwise false.
+        /// 如果包含指定的JsonValue类型的元素，则返回true其他情况返回false
         /// </summary>
         /// <param name="item">Item.</param>
         public bool Contains(JsonValue item)
@@ -127,47 +178,14 @@ namespace CsharpJson
         }
         /// <summary>
         /// Gets the enumerator.
+        /// 获取计数器（迭代）
         /// </summary>
         /// <returns>The enumerator.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.arrylist.GetEnumerator();
         }
-        /// <summary>
-        /// paser json array to string.
-        /// </summary>
-        /// <returns>The json string.</returns>
-        public override string ToJsonString()
-        {
-            StringBuilder str = new StringBuilder(this.arrylist.Count * DEFAULT_MAX_LENGHT);
-            str.Append("[");
-            foreach (JsonValue  item in this.arrylist)
-            {
-                switch (item.Valuetype)
-                {
-                    case ValueType.NULL:
-                        str.AppendFormat("{0},","null");
-                        break;
-                    case ValueType.BOOL:
-                        str.AppendFormat("{0},", item.ToJsonString());
-                        break;
-                    case ValueType.NUMBER:
-                        str.AppendFormat("{0},", item.ToDouble());
-                        break;
-                    case ValueType.STRING:
-                        str.AppendFormat("{0},", item.ToJsonString());
-                        break;
-                    case ValueType.ARRAY:
-                        str.AppendFormat("{0},", item.ToJsonString());
-                        break;
-                    case ValueType.OBJECT:
-                        str.AppendFormat("{0},", item.ToJsonString());
-                        break;
-                }
-            }
-            str.Replace(',', ']', str.Length-1, 1);
-            return str.ToString();
-        }
+
     }
 }
 

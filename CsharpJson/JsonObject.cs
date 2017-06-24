@@ -21,29 +21,34 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CsharpJson
 {
-    public sealed class JsonObject : BaseType,IEnumerable
+    /// <summary>
+    /// Json object.
+    /// Json的Objcet型数据，其中的元素都是Key/Value对
+    /// </summary>
+    public sealed class JsonObject : BaseType, IEnumerable
     {
-        //默认字符串的平均最大长度
-        //为了提高字符串的拼接性能，需要提前预估分配内存，避免StringBuild频繁申请内存
-        private readonly int DEFAULT_MAX_LENGHT = 40;
-        Dictionary<string,JsonValue> items;
+        /// <summary>
+        /// The items.
+        /// 保存键值型数据
+        /// </summary>
+        Dictionary<string, JsonValue> items;
         /// <summary>
         /// Initializes a new instance of the <see cref="CsharpJson.JsonObject"/> class.
+        /// 初始化一个新的<see cref="CsharpJson.JsonObject"/>类实例
         /// </summary>
         public JsonObject()
         {
-            this.items = new Dictionary<string,JsonValue>();
+            this.items = new Dictionary<string, JsonValue>();
         }
         /// <summary>
         /// Gets or sets the <see cref="CsharpJson.JsonObject"/> with the string key.
+        /// 获取或设置指定Key的<see cref="CsharpJson.JsonObject"/> 
         /// </summary>
         /// <param name="key">Key.</param>
-        public JsonValue this [string key]
+        public JsonValue this[string key]
         {
             get
             {
@@ -64,12 +69,20 @@ namespace CsharpJson
                 }
                 else
                 {
+                    if (value==null)
+                    {
+                        this.items.Add(key,new JsonValue());
+                    }
+                    else
+                    { 
                     this.items.Add(key, value);
+                    }
                 }
             }
         }
         /// <summary>
         /// Add the specified key and value.
+        /// 添加一个指定的键值对
         /// </summary>
         /// <param name="key">Key.</param>
         /// <param name="value">Value.</param>
@@ -77,7 +90,7 @@ namespace CsharpJson
         {
             if (key == null)
             {
-                throw new AggregateException();
+                throw new ArgumentNullException();
             }
             if (this.items.ContainsKey(key))
             {
@@ -85,11 +98,19 @@ namespace CsharpJson
             }
             else
             {
-                this.items.Add(key, value);
+                if (value == null)
+                {
+                    this.items.Add(key, new JsonValue());
+                }
+                else
+                {
+                    this.items.Add(key, value);
+                }
             }
         }
         /// <summary>
         /// Gets the count.
+        /// 获取JsonObject中元素（键/值）的数量
         /// </summary>
         /// <value>The count.</value>
         public int Count
@@ -101,6 +122,7 @@ namespace CsharpJson
         }
         /// <summary>
         /// Gets the keys.
+        /// 获取通过迭代器获取键
         /// </summary>
         /// <value>The keys.</value>
         public ICollection<string> Keys
@@ -112,6 +134,7 @@ namespace CsharpJson
         }
         /// <summary>
         /// Gets the values.
+        /// 通过迭代获取值
         /// </summary>
         /// <value>The values.</value>
         public ICollection<JsonValue> Values
@@ -123,13 +146,15 @@ namespace CsharpJson
         }
         /// <summary>
         /// Clear this instance.
+        /// 清楚JsonObject中的元素
         /// </summary>
         public void Clear()
         {
             this.items.Clear();
         }
         /// <summary>
-        /// if Containses the key return true otherwise return false.
+        /// if Containses the key return true otherwise return false.、
+        /// 如果包含指定的Key,则返回true，其他情况返回false
         /// </summary>
         /// <returns><c>true</c>, if key was containsed, <c>false</c> otherwise.</returns>
         /// <param name="key">Key.</param>
@@ -139,6 +164,7 @@ namespace CsharpJson
         }
         /// <summary>
         /// Remove the item by specified key.
+        /// 删除指定key处的元素
         /// </summary>
         /// <param name="key">Key.</param>
         public bool Remove(string key)
@@ -156,12 +182,13 @@ namespace CsharpJson
         }
         /// <summary>
         /// Tries the get value.
+        /// 尝试获取指定key的值，如果key存在返回ture，否则返回false
         /// </summary>
         /// <returns><c>true</c>, if get value was tryed, <c>false</c> otherwise.</returns>
         /// <param name="key">Key.</param>
         /// <param name="value">Value.</param>
         public bool TryGetValue(string key, out JsonValue value)
-        { 
+        {
             if (this.items.ContainsKey(key))
             {
                 value = this.items[key];
@@ -175,46 +202,13 @@ namespace CsharpJson
         }
         /// <summary>
         /// Gets the enumerator.
+        /// 迭代
         /// </summary>
         /// <returns>The enumerator.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.items.GetEnumerator();
         }
-        /// <summary>
-        /// To the json string.
-        /// </summary>
-        /// <returns>The json string.</returns>
-        public override string ToJsonString()
-        {
-            StringBuilder str = new StringBuilder(this.items.Count * 2 * DEFAULT_MAX_LENGHT);
-            str.Append("{");
-            foreach (KeyValuePair<string,JsonValue>  item in items)
-            {
-                switch (item.Value.Valuetype)
-                {
-                    case ValueType.NULL:
-                        str.AppendFormat("\"{0}\":{1},", item.Key,"null");
-                        break;
-                    case ValueType.BOOL:
-                        str.AppendFormat("\"{0}\":{1},", item.Key, item.Value.ToJsonString());
-                        break;
-                    case ValueType.NUMBER:
-                        str.AppendFormat("\"{0}\":{1},", item.Key, item.Value.ToDouble());
-                        break;
-                    case ValueType.STRING:
-                        str.AppendFormat("\"{0}\":{1},", item.Key, item.Value.ToJsonString());
-                        break;
-                    case ValueType.ARRAY:
-                        str.AppendFormat("\"{0}\":{1},", item.Key, item.Value.ToJsonString());
-                        break;
-                    case ValueType.OBJECT:
-                        str.AppendFormat("\"{0}\":{1},",item.Key, item.Value.ToJsonString());
-                        break;
-                }
-            }
-            str.Replace(',', '}', str.Length-1, 1);
-            return str.ToString();
-        }
+
     }
 }

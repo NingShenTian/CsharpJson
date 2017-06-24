@@ -24,8 +24,9 @@ namespace CsharpJson
 {
     /// <summary>
     /// JsonValue type.
+    /// JsonValue的数据类型
     /// </summary>
-     public enum ValueType
+     public enum JsonType
     {
         NULL = 0x0,
         BOOL = 0x1,
@@ -37,27 +38,30 @@ namespace CsharpJson
     }
     /// <summary>
     /// Json value.
+    /// JsonValue类型
     /// </summary>
     public sealed class JsonValue
     {
         private BaseType value;
-        private ValueType type;
+        private JsonType type;
         /// <summary>
         /// Initializes a new instance of the <see cref="CsharpJson.JsonValue"/> class.
+        /// 初始化一个新的<see cref="CsharpJson.JsonValue"/>类的实例，JsonValue类型为JsonType.NULL
         /// </summary>
         public JsonValue()
         {
-            type = ValueType.NULL;
+            type = JsonType.NULL;
             this.value = null;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CsharpJson.JsonValue"/> class.
+        /// 初始化一个新的<see cref="CsharpJson.JsonValue"/>类的实例，JsonValue类型为JsonType.BOOL
         /// </summary>
         /// <param name="value">If set to <c>true</c> value.</param>
         public JsonValue(bool value)
         {
-            type = ValueType.BOOL;
+            type = JsonType.BOOL;
             this.value = new JsonBool(value);
         }
         public static implicit operator JsonValue(bool value)
@@ -66,24 +70,27 @@ namespace CsharpJson
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="CsharpJson.JsonValue"/> class.
+        /// 初始化一个新的<see cref="CsharpJson.JsonValue"/>类的实例，JsonValue类型为JsonType.NUMBER
         /// </summary>
         /// <param name="value">Value.</param>
         public JsonValue(int value)
         {
-            type = ValueType.NUMBER;
+            type = JsonType.NUMBER;
             this.value = new JsonDouble(value);
         }
         public static implicit operator JsonValue(int value)
         {
             return new JsonValue(value);
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CsharpJson.JsonValue"/> class.
+        /// 初始化一个新的<see cref="CsharpJson.JsonValue"/>类的实例，JsonValue类型为JsonType.NUMBER
         /// </summary>
         /// <param name="value">Value.</param>
         public JsonValue(double value)
         {
-            type = ValueType.NUMBER;
+            type = JsonType.NUMBER;
             this.value = new JsonDouble(value);
         }
         public static implicit operator JsonValue(double value)
@@ -92,11 +99,12 @@ namespace CsharpJson
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="CsharpJson.JsonValue"/> class.
+        /// 初始化一个新的<see cref="CsharpJson.JsonValue"/>类的实例，JsonValue类型为JsonType.STRING
         /// </summary>
         /// <param name="value">Value.</param>
         public JsonValue(string value)
         {
-            type = ValueType.STRING;
+            type = JsonType.STRING;
             this.value = new JsonString(value);
         }
         public static implicit operator JsonValue(string value)
@@ -105,11 +113,12 @@ namespace CsharpJson
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="CsharpJson.JsonValue"/> class.
+        /// 初始化一个新的<see cref="CsharpJson.JsonValue"/>类的实例，JsonValue类型为JsonType.ARRAY
         /// </summary>
         /// <param name="value">Value.</param>
         public JsonValue(JsonArray value)
         {
-            type = ValueType.ARRAY;
+            type = JsonType.ARRAY;
             this.value =value;
         }
         public static implicit operator JsonValue (JsonArray value)
@@ -118,11 +127,12 @@ namespace CsharpJson
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="CsharpJson.JsonValue"/> class.
+        /// 初始化一个新的<see cref="CsharpJson.JsonValue"/>类的实例，JsonValue类型为JsonType.OBJECT
         /// </summary>
         /// <param name="value">Value.</param>
         public JsonValue(JsonObject value)
         {
-            type = ValueType.OBJECT;
+            type = JsonType.OBJECT;
             this.value=value;
         }
         public static implicit operator JsonValue (JsonObject value)
@@ -131,75 +141,84 @@ namespace CsharpJson
         }
         /// <summary>
         /// Is null.
+        /// 当前JsonValue数据是否是JsonType.NULL类型
         /// </summary>
         /// <returns><c>true</c>, if null was ised, <c>false</c> otherwise.</returns>
-        public bool isNull()
+        public bool IsNull()
         {
-            return type == ValueType.NULL;
+            return type == JsonType.NULL;
         }
         /// <summary>
         /// Is bool.
+        /// 当前JsonValue数据是否是JsonType.BOOL类型
         /// </summary>
         /// <returns><c>true</c>, if bool was ised, <c>false</c> otherwise.</returns>
-        public bool isBool()
+        public bool IsBool()
         {
-            return type == ValueType.BOOL;
+            return type == JsonType.BOOL;
         }
         /// <summary>
         /// Is double.
+        /// 当前JsonValue数据是否是JsonType.NUMBER类型
         /// </summary>
         /// <returns><c>true</c>, if double was ised, <c>false</c> otherwise.</returns>
-        public bool isNumber()
+        public bool IsNumber()
         {
-            return type == ValueType.NUMBER;
+            return type == JsonType.NUMBER;
         }
         /// <summary>
         /// Is string.
+        /// 当前JsonValue数据是否是JsonType.STRING类型
         /// </summary>
         /// <returns><c>true</c>, if string was ised, <c>false</c> otherwise.</returns>
-        public bool isString()
+        public bool IsString()
         {
-            return type == ValueType.STRING;
+            return type == JsonType.STRING;
         }
         /// <summary>
         /// Ises array.
+        /// 当前JsonValue数据是否是JsonType.ARRAY类型
         /// </summary>
         /// <returns><c>true</c>, if array was ised, <c>false</c> otherwise.</returns>
-        public bool isArray()
+        public bool IsArray()
         {
-            return type == ValueType.ARRAY;
+            return type == JsonType.ARRAY;
         }
         /// <summary>
         /// Is object.
+        /// 当前JsonValue数据是否是JsonType.OBJECT类型
         /// </summary>
         /// <returns><c>true</c>, if object was ised, <c>false</c> otherwise.</returns>
-        public bool isObject()
+        public bool IsObject()
         {
-            return type == ValueType.OBJECT;
+            return type == JsonType.OBJECT;
         }
         /// <summary>
         /// Is undefined.
+        /// 当前JsonValue数据是否是JsonType.UNDEFINED类型
         /// </summary>
         /// <returns><c>true</c>, if undefined was ised, <c>false</c> otherwise.</returns>
-        public bool isUndefined()
+        public bool IsUndefined()
         {
-            return type == ValueType.UNDEFINED;
+            return type == JsonType.UNDEFINED;
         }
         /// <summary>
         /// Gets the Value Type.
+        /// 获取当前JsonValue的值的类型
         /// </summary>
         /// <value>The gettype.</value>
-        public ValueType Valuetype
+        public JsonType Valuetype
         {
             get { return this.type;}
         }
         /// <summary>
         /// To the bool.
+        /// 将JsonValue转为Bool型，如果JsonValue原本不是 JsonType.BOOL型，则引发Format异常
         /// </summary>
         /// <returns><c>true</c>, if bool was toed, <c>false</c> otherwise.</returns>
         public bool ToBool()
         {
-            if(!this.isBool())
+            if(!this.IsBool())
             {
                 throw new FormatException();
             }
@@ -207,11 +226,12 @@ namespace CsharpJson
         }
         /// <summary>
         /// To the int.
+        /// 将JsonValue转为int型，如果JsonValue原本不是 JsonType.NUMBER型，则引发Format异常
         /// </summary>
         /// <returns>The int.</returns>
         public int ToInt()
         {
-            if (!this.isNumber())
+            if (!this.IsNumber())
             {
                 throw new FormatException();
             }
@@ -219,31 +239,26 @@ namespace CsharpJson
         }
         /// <summary>
         /// To the double.
+        /// 将JsonValue转为double型，如果JsonValue原本不是 JsonType.NUMBER型，则引发Format异常
         /// </summary>
         /// <returns>The double.</returns>
         public double ToDouble()
         {
-            if (!this.isNumber())
+            if (!this.IsNumber())
             {
                 throw new FormatException();
             }
             return ((JsonDouble)this.value).Value;
         }
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents the current <see cref="CsharpJson.JsonValue"/>.
-        /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents the current <see cref="CsharpJson.JsonValue"/>.</returns>
-        public string ToJsonString()
-        {
-            return this.value.ToJsonString();
-        }
+
         /// <summary>
         /// To the array.
+        /// 将JsonValue转为JsonArray型，如果JsonValue原本不是 JsonType.ARRAY型，则引发Format异常
         /// </summary>
         /// <returns>The array.</returns>
         public JsonArray ToArray()
         {
-            if (!this.isArray())
+            if (!this.IsArray())
             {
                 throw new FormatException();
             }
@@ -251,11 +266,12 @@ namespace CsharpJson
         }
         /// <summary>
         /// To the object.
+        /// 将JsonValue转为JsonObject型，如果JsonValue原本不是 JsonType.OBJECT型，则引发Format异常
         /// </summary>
         /// <returns>The object.</returns>
         public JsonObject ToObject()
         {
-            if (!this.isObject())
+            if (!this.IsObject())
             {
                 throw new FormatException();
             }
@@ -263,11 +279,12 @@ namespace CsharpJson
         }
         /// <summary>
         /// To the string.
+        /// 将JsonValue转为string型，如果JsonValue原本不是 JsonType.STRING型，则引发Format异常
         /// </summary>
         /// <returns>The string.</returns>
-        public  string ToStr()
+        public override  string ToString()
         {
-            if (!this.isString())
+            if (!this.IsString())
             {
                 throw new FormatException();
             }
@@ -276,6 +293,7 @@ namespace CsharpJson
     }
     /// <summary>
     /// Base type.
+    /// 基类，JsonBool，JsonDouble，JsonString，JsonArray，JsonObject都寸Basetype继承
     /// </summary>
      public class BaseType
     {
@@ -283,16 +301,17 @@ namespace CsharpJson
         {
             //nothing
         }
-        public virtual string ToJsonString()
-        {
-            return "";
-        }
     }
     /// <summary>
     /// Json bool.
+    /// JsonBool类型
     /// </summary>
      sealed class JsonBool:BaseType
     {
+        /// <summary>
+        /// The value.
+        /// bool型数据
+        /// </summary>
         private bool value;
         public JsonBool(bool val)
         {
@@ -303,13 +322,11 @@ namespace CsharpJson
             get{ return this.value;}
             set{this.value=value;}
         }
-        public override string ToJsonString()
-        {
-            return value.ToString().ToLower();
-        }
+
     }
     /// <summary>
     /// Json double.
+    /// JsonDouble类型
     /// </summary>
     sealed class JsonDouble :BaseType
     {
@@ -322,10 +339,6 @@ namespace CsharpJson
         {
             get{ return this.value;}
             set{this.value=value;}
-        }
-        public override string ToJsonString()
-        {
-            return value.ToString();
         }
     }
     /// <summary>
@@ -343,10 +356,7 @@ namespace CsharpJson
             get{ return this.value;}
             set{this.value=value;}
         }
-        public override string ToJsonString()
-        {
-            return "\""+value+"\"";
-        }
+
     }
 }
 

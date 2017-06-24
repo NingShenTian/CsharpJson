@@ -5,7 +5,7 @@ C#编写的通用Json解析库！当前解析功能已经能够正确解析，�
 　　2. 将CsharpJson整个项目直接生成得到CsharpJson.dll通过引用的方式添加到项目中
 ##### 2.具体使用：
 生成Json：
-```C#
+``` C#
 using CsharpJson;
 namespace test
 {
@@ -28,16 +28,18 @@ namespace test
             arr.Add(456);
             arr.Add(false);
             arr.Add(child);
-
             JsonObject obj = new JsonObject();
             obj.Add("中国", "china");
             obj.Add("北京", true);
             obj.Add("上海", 123);
+            obj.Add("NULL",null);
             obj.Add("childobj", child);
             obj.Add("arrayvalue", arr);
-
+            JsonDocument doc=new JsonDocument();
+            doc.Object=obj;
+            string val = doc.ToJson();
             Console.WriteLine("生成的Json字符串：");
-            Console.WriteLine(obj.ToJsonString());
+            Console.WriteLine(val);
         }
     }
 }
@@ -76,25 +78,24 @@ namespace test
 解析Josn：
 ``` C#
 string data = "{\"中国\": \"china\",\"北京\": true,\"上海\": 123}";
-JsonPaser paser = new JsonPaser();
-JsonValue value= paser.Paser(data);
-if(value.isObject())
-   {
-       JsonObject jsobj=value.ToObject();
-       foreach(string key in jsobj.Keys)
-       {
-           switch(jsobj[key].Valuetype)
-           {
-               case JsonType.BOOL:
-                            Console.WriteLine("key={0},value={1}",key,jsobj[key].ToBool());
-                            break;
-                        case JsonType.NUMBER:
-                            Console.WriteLine("key={0},value={1}",key,jsobj[key].ToInt());
-                            break;
-                        case JsonType.STRING:
-                            Console.WriteLine("key={0},value={1}",key,jsobj[key].ToStr());
-                            break;
-                    }
-                }
-            }
+doc = JsonDocument.FromString(data);
+if(doc.IsObject())
+{
+    JsonObject jsobj = doc.Object;
+    foreach(string key in jsobj.Keys)
+    {
+        switch(jsobj[key].Valuetype)
+        {
+            case JsonType.BOOL:
+                Console.WriteLine("key={0},value={1}",key,jsobj[key].ToBool());
+                break;
+            case JsonType.NUMBER:
+                Console.WriteLine("key={0},value={1}",key,jsobj[key].ToInt());
+                break;
+            case JsonType.STRING:
+                Console.WriteLine("key={0},value={1}",key,jsobj[key].ToString());
+                break;
+        }
+    }
+}
 ```
