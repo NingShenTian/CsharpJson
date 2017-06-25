@@ -45,7 +45,8 @@ namespace CsharpJson
         }
         /// <summary>
         /// Gets or sets the <see cref="CsharpJson.JsonObject"/> with the string key.
-        /// 获取或设置指定Key的<see cref="CsharpJson.JsonObject"/> 
+		/// 获取或设置指定Key的<see cref="CsharpJson.JsonObject"/> ;
+		/// 获取指定key的值，如果不包含该元素则返回null
         /// </summary>
         /// <param name="key">Key.</param>
         public JsonValue this[string key]
@@ -82,7 +83,7 @@ namespace CsharpJson
         }
         /// <summary>
         /// Add the specified key and value.
-        /// 添加一个指定的键值对
+		/// 添加一个指定的键值对;异常：当key为null时引发异常
         /// </summary>
         /// <param name="key">Key.</param>
         /// <param name="value">Value.</param>
@@ -200,11 +201,7 @@ namespace CsharpJson
                 return false;
             }
         }
-        /// <summary>
-        /// Gets the enumerator.
-        /// 迭代
-        /// </summary>
-        /// <returns>The enumerator.</returns>
+
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.items.GetEnumerator();

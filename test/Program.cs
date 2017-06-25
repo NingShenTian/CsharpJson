@@ -48,6 +48,7 @@ namespace test
             arr.Add(456);
             arr.Add(false);
             arr.Add(child);
+			arr.Add (null);
             JsonObject obj = new JsonObject();
             obj.Add("中国", "china");
             obj.Add("北京", true);

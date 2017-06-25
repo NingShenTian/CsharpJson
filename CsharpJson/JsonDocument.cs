@@ -419,39 +419,41 @@ namespace CsharpJson
         static private JsonValue GetArray(ref int index, string strjson)
         {
             index++;
-            JsonArray array = new JsonArray();
+            JsonArray arr = new JsonArray();
             while (index < strjson.Length)
             {
                 switch (strjson[index])
                 {
                     case '"':
-                        array.Add(GetString(ref index, strjson));
+                        arr.Add(GetString(ref index, strjson));
                         break;
                     case ' ':
                         ++index;
                         break;
                     case '{':
-                        array.Add(GetObject(ref index, strjson));
+                        arr.Add(GetObject(ref index, strjson));
                         break;
                     case 't':
                     case 'f':
-                        array.Add(Getbool(ref index, strjson));
+                        arr.Add(Getbool(ref index, strjson));
                         break;
+					case 'n':
+						arr.Add(GetNull(ref index,strjson));
+					break;
                     case ',':
                         index++;
                         break;
                     case '[':
-                        array.Add(GetArray(ref index, strjson));
+                        arr.Add(GetArray(ref index, strjson));
                         break;
                     case ']':
                         ++index;
-                        return array;
+                        return arr;
                     default:
-                        array.Add(Getnumber(ref index, strjson));
+                        arr.Add(Getnumber(ref index, strjson));
                         break;
                 }
             }
-
             return null;
         }
         /// <summary>

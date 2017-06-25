@@ -20,7 +20,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using System.Collections.Generic;
 using System.Collections;
-
+using System;
 namespace CsharpJson
 {
     /// <summary>
@@ -42,13 +42,91 @@ namespace CsharpJson
         {
             arrylist = new List<JsonValue>();
         }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="CsharpJson.JsonArray"/> class.
+		/// 用指定的int[]初始化一个新的<see cref="CsharpJson.JsonArray"/>类的实例;
+		/// 异常：当values为null时引发异常
+		/// </summary>
+		/// <param name="values">Values.</param>
+		public JsonArray(int []values)
+		{
+			arrylist = new List<JsonValue> ();
+			if (values==null)
+			{
+				throw new ArgumentNullException ();
+			}
+			for (int i = 0; i < values.Length; ++i)
+			{
+				this.arrylist.Add(values[i]);
+			}
+		}
+		/// <summary>
+		/// Initializes a new instance of the <see cref="CsharpJson.JsonArray"/> class.
+		/// 用指定的double[]初始化一个新的<see cref="CsharpJson.JsonArray"/>类的实例;
+		/// 异常：当values为null时引发异常
+		/// </summary>
+		/// <param name="values">Values.</param>
+		public JsonArray(double []values)
+		{
+			arrylist = new List<JsonValue> ();
+			if(values==null)
+			{
+				throw new ArgumentNullException ();
+			}
+			for(int i=0;i<values.Length;++i)
+			{
+				this.arrylist.Add (values[i]);
+			}
+		}
+		/// <summary>
+		/// Initializes a new instance of the <see cref="CsharpJson.JsonArray"/> class.
+		/// 用指定的string[]初始化一个新的 <see cref="CsharpJson.JsonArray"/>类的实例;
+		/// 异常：当values为null时引发异常
+		/// </summary>
+		/// <param name="values">Values.</param>
+		public JsonArray(string []values)
+		{
+			arrylist = new List<JsonValue> ();
+			if(values==null)
+			{
+				throw new ArgumentNullException ();
+			}
+			for(int i=0;i<values.Length;++i)
+			{
+				this.arrylist.Add (values[i]);
+			}
+		}
+		/// <summary>
+		/// Initializes a new instance of the <see cref="CsharpJson.JsonArray"/> class.
+		/// 用指定的List<string>初始化一个新的<see cref="CsharpJson.JsonArray"/>类的实例;
+		/// 异常：当strlist为null时引发异常
+		/// </summary>
+		/// <param name="strlist">Strlist.</param>
+		public JsonArray(List<string>strlist)
+		{
+			arrylist = new List<JsonValue> ();
+			if (strlist == null)
+			{
+				throw new ArgumentNullException ();
+			}
+			foreach (string iter in strlist)
+			{
+				this.arrylist.Add(new JsonValue(iter));
+			}
+		}
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CsharpJson.JsonArray"/> class.
-        /// 初始化一个新的 <see cref="CsharpJson.JsonArray"/>类的实例
+		/// 初始化一个新的 <see cref="CsharpJson.JsonArray"/>类的实例;
+		/// 异常：当arr为null时引发异常
         /// </summary>
         /// <param name="arr">Arr.</param>
         public JsonArray(JsonArray arr)
         {
+			if(arr==null)
+			{
+				throw new ArgumentNullException ();
+			}
             for (int i = 0; i < arr.Count; ++i)
             {
                 this.arrylist.Add(arr[i]);
@@ -72,14 +150,7 @@ namespace CsharpJson
         {
             get
             {
-                if (i >= this.arrylist.Count || i < 0)
-                {
-                    return null;
-                }
-                else
-                {
-                    return this.arrylist[i];
-                }
+            	return this.arrylist[i];
             }
             set
             {
@@ -98,31 +169,31 @@ namespace CsharpJson
         /// 添加指定的int数组
         /// </summary>
         /// <param name="values">Values.</param>
-        public void Add(int[] values)
+        public void Adds(int[] values)
         {
             if (values==null)
             {
-                return;
+				throw new ArgumentNullException ();
             }
             for (int i = 0; i < values.Length; ++i)
             {
                 this.arrylist.Add(values[i]);
             }
         }
+
         /// <summary>
         /// Add the specified values.
         /// 添加指定的double数组
         /// </summary>
         /// <param name="values">Values.</param>
-        public void Add(double[] values)
+        public void Adds(double[] values)
         {
             if (values == null)
             {
-                return;
+				throw new ArgumentNullException ();
             }
             for (int i = 0; i < values.Length; ++i)
             {
-
                 this.arrylist.Add(values[i]);
             }
         }
@@ -131,11 +202,11 @@ namespace CsharpJson
         /// 添加指定的string数组
         /// </summary>
         /// <param name="values">Values.</param>
-        public void Add(string[] values)
+        public void Adds(string[] values)
         {
             if (values == null)
             {
-                return;
+				throw new ArgumentNullException ();
             }
             for (int i = 0; i < values.Length; ++i)
             {
@@ -147,11 +218,11 @@ namespace CsharpJson
         /// 添加指定的string类型List
         /// </summary>
         /// <param name="strlist">Strlist.</param>
-        public void Add(List<string> strlist)
+        public void Adds(List<string> strlist)
         {
             if (strlist == null)
             {
-                return;
+				throw new ArgumentNullException ();
             }
             foreach (string iter in strlist)
             {
@@ -165,7 +236,13 @@ namespace CsharpJson
         /// <param name="value">Value.</param>
         public void Add(JsonValue value)
         {
-            this.arrylist.Add(value);
+			if (value == null) 
+			{
+				this.arrylist.Add (new JsonValue ());
+			} else
+			{
+				this.arrylist.Add (value);
+			}
         }
         /// <summary>
         /// if Contains the JsonValue item return true otherwise false.
@@ -185,7 +262,10 @@ namespace CsharpJson
         {
             return this.arrylist.GetEnumerator();
         }
-
+		public JsonValue value(int index)
+		{
+			return this.arrylist[index];
+		}
     }
 }
 
