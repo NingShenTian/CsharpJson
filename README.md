@@ -1,6 +1,5 @@
 
-C#编写的通用Json解析库！如果发现bug请第一时间通知作者修复!</br>
-邮箱：springrain1991@hotmail.com<br>
+基于C#的通用Json解析库！issues<br>
 GitHub:https://github.com/NingShenTian/CsharpJson </br>
 码云：https://git.oschina.net/xiaoguozhier/CsharpJson  <br>
 ##### 1.说明：
