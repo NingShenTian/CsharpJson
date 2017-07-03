@@ -1,7 +1,0 @@
-/home/ning/homeDir/gitrepos/CsharpJson/test/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
-/home/ning/homeDir/gitrepos/CsharpJson/test/bin/Debug/test.exe.mdb
-/home/ning/homeDir/gitrepos/CsharpJson/test/bin/Debug/test.exe
-/home/ning/homeDir/gitrepos/CsharpJson/test/obj/Debug/test.exe
-/home/ning/homeDir/gitrepos/CsharpJson/test/obj/Debug/test.exe.mdb
-/home/ning/homeDir/gitrepos/CsharpJson/test/bin/Debug/CsharpJson.dll
-/home/ning/homeDir/gitrepos/CsharpJson/test/bin/Debug/CsharpJson.dll.mdb
