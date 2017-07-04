@@ -8,7 +8,7 @@ GitHub:https://github.com/NingShenTian/CsharpJson </br>
 　　3. 本Json库支持所有的C#版本包括Linux MonoDevelop，事实上该项目是在Ubuntu Linux上用MonoDevelop和WIndows下VS交替完成的。
 ##### 2.具体使用：
 生成Json：
-``` C#
+``` cs
 using CsharpJson;
 namespace test
 {
@@ -48,7 +48,7 @@ namespace test
 }
 ```
 执行结果：
-```
+``` json
 生成的Json字符串：
 {
     "中国": "china",
@@ -79,9 +79,9 @@ namespace test
 }
 ```
 解析Josn：
-``` C#
+``` cs
 string data = "{\"中国\": \"china\",\"北京\": true,\"上海\": 123}";
-doc = JsonDocument.FromString(data);
+JsonDocument doc = JsonDocument.FromString(data);
 if(doc.IsObject())
 {
     JsonObject jsobj = doc.Object;
