@@ -179,7 +179,6 @@ namespace CsharpJson
             {
                 return false;
             }
-
         }
         /// <summary>
         /// Tries the get value.
@@ -205,6 +204,15 @@ namespace CsharpJson
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.items.GetEnumerator();
+        }
+        /// <summary>
+        /// Value the specified key.
+        /// 返回指定key的value
+        /// </summary>
+        /// <param name="key">Key.</param>
+        public JsonValue value(string key)
+        {
+            return this.items[key];
         }
 
     }

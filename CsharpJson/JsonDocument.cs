@@ -154,8 +154,7 @@ namespace CsharpJson
             {
                 return false;
             }
-        }
-            
+        } 
         /// <summary>
         /// Tos the json array.
         /// 序列化成Byte数组
@@ -175,7 +174,6 @@ namespace CsharpJson
             {
                 string jsonstr = ToJsonString(Object);
                 return jsonstr;
-
             }
             else if (Array != null)
             {
@@ -184,7 +182,7 @@ namespace CsharpJson
             }
             else
             {
-                return null;
+                throw new NullReferenceException("被序列化的对象或数组不能为null");
             }
         }
         /// <summary>
@@ -226,9 +224,9 @@ namespace CsharpJson
         {
             JsonDocument doc = new JsonDocument();
             doc.Encod = encod;
-            if (jsonstr == null || jsonstr.Length < 2)
+            if (jsonstr == null)
             {
-                return null;
+                throw new NullReferenceException("不能为null");
             }
             int index = 0;
             if (jsonstr[0] == '{')
@@ -406,8 +404,7 @@ namespace CsharpJson
                         break;
                 }
             }
-            Console.WriteLine("get object null");
-            return null;
+            throw new FormatException("解析错误！");
         }
         /// <summary>
         /// Gets the array.
