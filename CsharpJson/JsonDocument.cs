@@ -489,7 +489,7 @@ namespace CsharpJson
             string strbool = "";
             for (; index < strjson.Length; ++index)
             {
-                if (strjson[index] != ','&& strjson[index] != '}' && strjson[index] != ']')
+                if (strjson[index] != ','&& strjson[index] != '}' && strjson[index] != ']' && strjson[index] != ' ' && strjson[index] != '\n')
                 {
                     strbool += strjson[index];
                 }
@@ -522,7 +522,7 @@ namespace CsharpJson
             string strnum = "";
             for (; index < strjson.Length; ++index)
             {
-                if (strjson[index] != ',' && strjson[index] != '}' && strjson[index] != ']')
+                if (strjson[index] != ',' && strjson[index] != '}' && strjson[index] != ']' && strjson[index] != ' ' && strjson[index] != '\n')
                 {
                     strnum += strjson[index];
                 }
@@ -554,7 +554,7 @@ namespace CsharpJson
             string strnull = "";
             for (; index < strjson.Length; ++index)
             {
-                if (strjson[index] != ','&& strjson[index] != '}' && strjson[index] != ']')
+                if (strjson[index] != ','&& strjson[index] != '}' && strjson[index] != ']'&&strjson[index]!=' '&&strjson[index]!='\n')
                 {
                     strnull += strjson[index];
                 }
