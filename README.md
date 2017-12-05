@@ -1,5 +1,5 @@
 
-基于C#的通用Json解析库！</br>
+基于C#的通用Json解析库！  
 GitHub:https://github.com/NingShenTian/CsharpJson   
 码云：https://git.oschina.net/xiaoguozhier/CsharpJson   
 ##### 1.说明：
