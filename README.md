@@ -1,7 +1,7 @@
 
 基于C#的通用Json解析库！  
 GitHub:https://github.com/NingShenTian/CsharpJson   
-码云：https://git.oschina.net/xiaoguozhier/CsharpJson   
+码云：https://gitee.com/xiaoguozhier/CsharpJson   
 ##### 1.说明：
 　　1. 将JsonObject.cs、JsonArray.cs、JsonValue.cs、JsonDocument.cs 4个文件直接添加到你的项目中使用   
 　　2. 或将CsharpJson整个项目直接生成得到CsharpJson.dll通过引用的方式添加到项目中使用   
