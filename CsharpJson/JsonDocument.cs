@@ -280,6 +280,11 @@ namespace CsharpJson
         {
             StringBuilder str = new StringBuilder(items.Count * 2 * DEFAULT_MAX_LENGHT);
             str.Append("{");
+            if(items.Count==0)
+            {
+                str.Append("}");
+                return str.ToString();
+            }
             foreach (KeyValuePair<string, JsonValue> item in items)
             {
                 switch (item.Value.Valuetype)
@@ -317,6 +322,11 @@ namespace CsharpJson
         {
             StringBuilder str = new StringBuilder(arrylist.Count * DEFAULT_MAX_LENGHT);
             str.Append("[");
+            if(arrylist.Count==0)
+            {
+                str.Append("]");
+                return str.ToString();
+            }
             foreach (JsonValue item in arrylist)
             {
                 switch (item.Valuetype)
