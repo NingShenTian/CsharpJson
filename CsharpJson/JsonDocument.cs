@@ -376,6 +376,8 @@ namespace CsharpJson
                         index++;
                         break;
                     case ' ':
+                    case '\n':
+                    case '\r':
                         index++;
                         break;
                     case '"':
@@ -435,6 +437,8 @@ namespace CsharpJson
                         arr.Add(GetString(ref index, strjson));
                         break;
                     case ' ':
+                    case '\n':
+                    case '\r':
                         ++index;
                         break;
                     case '{':
@@ -499,13 +503,13 @@ namespace CsharpJson
             string strbool = "";
             for (; index < strjson.Length; ++index)
             {
-                if (strjson[index] != ','&& strjson[index] != '}' && strjson[index] != ']' && strjson[index] != ' ' && strjson[index] != '\n')
+                if (strjson[index] == ',' ||strjson[index] == '}' || strjson[index] == ']'||strjson[index] == ' '||strjson[index] == '\n'|| strjson[index] == '\r')
                 {
-                    strbool += strjson[index];
+                    break;
                 }
                 else
                 {
-                    break;
+                    strbool += strjson[index];
                 }
             }
             if (strbool == "true")
@@ -532,13 +536,13 @@ namespace CsharpJson
             string strnum = "";
             for (; index < strjson.Length; ++index)
             {
-                if (strjson[index] != ',' && strjson[index] != '}' && strjson[index] != ']' && strjson[index] != ' ' && strjson[index] != '\n')
+                 if (strjson[index] == ',' || strjson[index] == '}'|| strjson[index] == ']'||strjson[index] == ' ' || strjson[index] == '\n' || strjson[index] == '\r')
                 {
-                    strnum += strjson[index];
+                    break;
                 }
                 else
                 {
-                    break;
+                    strnum += strjson[index];
                 }
             }
             double value;
@@ -564,13 +568,13 @@ namespace CsharpJson
             string strnull = "";
             for (; index < strjson.Length; ++index)
             {
-                if (strjson[index] != ','&& strjson[index] != '}' && strjson[index] != ']'&&strjson[index]!=' '&&strjson[index]!='\n')
+                if (strjson[index] == ',' || strjson[index] == '}' || strjson[index] == ']'||strjson[index] == ' ' || strjson[index] == '\n' ||strjson[index] == '\r')
                 {
-                    strnull += strjson[index];
+                    break;
                 }
                 else
                 {
-                    break;
+                    strnull += strjson[index];
                 }
             }
             if (strnull == "null")
