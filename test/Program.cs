@@ -33,6 +33,16 @@ namespace test
         public static void Main(string[] args)
         {
 
+            Test1();
+            Test2();
+            Test3();
+            Console.ReadLine();
+        }
+        /// <summary>
+        /// 测试数据添加和基本Json生成
+        /// </summary>
+        public static void Test1()
+        {
             JsonObject child = new JsonObject();
             child["china"] = "hello";
             child["shanghai"] = 123;
@@ -48,48 +58,47 @@ namespace test
             arr.Add(456);
             arr.Add(false);
             arr.Add(child);
-			arr.Add (null);
+            arr.Add(null);
             JsonObject obj = new JsonObject();
-            //obj.Add("中国", "china");
-            //obj.Add("北京", true);
-            //obj.Add("上海", 123);
-            //obj.Add("NULL",null);
-            //obj.Add("childobj", child);
-            //obj.Add("arrayvalue", arr);
-            string s = "{\"student\":[{\"name\":\"Jim\",\"age\":8,\"goodboy\":true},{\"name\":\"Tom\",\"age\":10,\"goodboy\":false}]}";
-            Console.WriteLine("测试："+s);
-            obj.Add("test", "{\"student\":[{\"name\":\"Jim\",\"age\":8,\"goodboy\":true},{\"name\":\"Tom\",\"age\":10,\"goodboy\":false}]}");
-            JsonDocument doc=new JsonDocument();
-            doc.Object=obj;
+            obj.Add("中国", "china");
+            obj.Add("北京", true);
+            obj.Add("上海", 123);
+            obj.Add("NULL", null);
+            obj.Add("childobj", child);
+            obj.Add("arrayvalue", arr);
+            JsonDocument doc = new JsonDocument();
+            doc.Object = obj;
             string val = doc.ToJson();
-            Console.WriteLine("生成的Json字符串：");
+            Console.WriteLine("Json：");
             Console.WriteLine(val);
             Console.WriteLine();
-            // string data = "{\"学生\":[{\"name\":\"小明\",\"age\":8},{\"\name\":\"Tom\",\"age\":10}]}";
+        }
+        /// <summary>
+        /// 测试Json解析
+        /// </summary>
+        public static void Test2()
+        {
+            string data = "{\"student\":[{\"name\":\"Jim\",\"age\":8},{\"\name\":\"Tom\",\"age\":10}]}";
+            JsonDocument doc = JsonDocument.FromString(data);
 
-            string data =val;
-
-           JsonDocument d = JsonDocument.FromString(data);
-
-            if(d.IsObject())
+            if (doc.IsObject())
             {
-                JsonObject jsobj = d.Object;
-                foreach(string key in jsobj.Keys)
+                JsonObject jsobj = doc.Object;
+                foreach (string key in jsobj.Keys)
                 {
-                    switch(jsobj[key].Valuetype)
+                    switch (jsobj[key].Valuetype)
                     {
                         case JsonType.BOOL:
-                            Console.WriteLine("key={0},value={1}",key,jsobj[key].ToBool());
+                            Console.WriteLine("key={0},value={1}", key, jsobj[key].ToBool());
                             break;
                         case JsonType.NUMBER:
-                            Console.WriteLine("key={0},value={1}",key,jsobj[key].ToInt());
+                            Console.WriteLine("key={0},value={1}", key, jsobj[key].ToInt());
                             break;
                         case JsonType.STRING:
                             {
-                                string ss =jsobj[key].ToString();
+                                string ss = jsobj[key].ToString();
                                 Console.WriteLine("key={0},value={1}", key, jsobj[key].ToString());
                                 break;
-
                             }
                         case JsonType.ARRAY:
                             foreach (JsonValue v in jsobj[key].ToArray())
@@ -111,7 +120,61 @@ namespace test
                     }
                 }
             }
-            Console.ReadLine();
+        }
+        /// <summary>
+        /// 将一个Json字符串当作一个string数据，
+        /// 测试对字符串中双引号的处理
+        /// </summary>
+        public static void Test3()
+        {
+            JsonObject obj = new JsonObject();
+            obj.Add("test", "{\"student\":[{\"name\":\"Jim\",\"age\":8,\"goodboy\":true},{\"name\":\"Tom\",\"age\":10,\"goodboy\":false}]}");
+            JsonDocument doc = new JsonDocument();
+            doc.Object = obj;
+            string val = doc.ToJson();
+            Console.WriteLine("生成的Json字符串：");
+            Console.WriteLine(val);
+
+            JsonDocument d = JsonDocument.FromString(val);
+            if (d.IsObject())
+            {
+                JsonObject jsobj = d.Object;
+                foreach (string key in jsobj.Keys)
+                {
+                    switch (jsobj[key].Valuetype)
+                    {
+                        case JsonType.BOOL:
+                            Console.WriteLine("key={0},value={1}", key, jsobj[key].ToBool());
+                            break;
+                        case JsonType.NUMBER:
+                            Console.WriteLine("key={0},value={1}", key, jsobj[key].ToInt());
+                            break;
+                        case JsonType.STRING:
+                            {
+                                string ss = jsobj[key].ToString();
+                                Console.WriteLine("key={0},value={1}", key, jsobj[key].ToString());
+                                break;
+                            }
+                        case JsonType.ARRAY:
+                            foreach (JsonValue v in jsobj[key].ToArray())
+                            {
+                                switch (v.Valuetype)
+                                {
+                                    case JsonType.BOOL:
+                                        Console.WriteLine("key={0}", v.ToBool());
+                                        break;
+                                    case JsonType.NUMBER:
+                                        Console.WriteLine("key={0}", v.ToInt());
+                                        break;
+                                    case JsonType.STRING:
+                                        Console.WriteLine("key={0}", v.ToString());
+                                        break;
+                                }
+                            }
+                            break;
+                    }
+                }
+            }
         }
     }
 }
