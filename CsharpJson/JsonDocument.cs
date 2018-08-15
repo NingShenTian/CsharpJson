@@ -480,6 +480,7 @@ namespace CsharpJson
             index++;
             for (; index < jsonstr.Length; ++index)
             {
+                char s = jsonstr[index];
                 switch (jsonstr[index])
                 {
                     case '"':

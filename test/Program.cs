@@ -50,19 +50,21 @@ namespace test
             arr.Add(child);
 			arr.Add (null);
             JsonObject obj = new JsonObject();
-            obj.Add("中国", "china");
-            obj.Add("北京", true);
-            obj.Add("上海", 123);
-            obj.Add("NULL",null);
-            obj.Add("childobj", child);
-            obj.Add("arrayvalue", arr);
+            //obj.Add("中国", "china");
+            //obj.Add("北京", true);
+            //obj.Add("上海", 123);
+            //obj.Add("NULL",null);
+            //obj.Add("childobj", child);
+            //obj.Add("arrayvalue", arr);
+            obj.Add("test", "{\"student\":[{\"name\":\"Jim\",\"age\":8,\"goodboy\":true},{\"name\":\"Tom\",\"age\":10,\"goodboy\":false}]}");
             JsonDocument doc=new JsonDocument();
             doc.Object=obj;
             string val = doc.ToJson();
             Console.WriteLine("生成的Json字符串：");
             Console.WriteLine(val);
             Console.WriteLine();
-            string data = "{\"中国\": \"china\",\"北京\": true,\"上海\": 123}";
+            // string data = "{\"学生\":[{\"name\":\"小明\",\"age\":8},{\"\name\":\"Tom\",\"age\":10}]}";
+            string data = "{\"test\": \"{\"student\":[{\"name\":\"Jim\",\"age\":8,\"goodboy\":true},{\"name\":\"Tom\",\"age\":10,\"goodboy\":false}]}\"}";
             doc = JsonDocument.FromString(data);
 
             if(doc.IsObject())
@@ -101,6 +103,7 @@ namespace test
                     }
                 }
             }
+            Console.ReadLine();
         }
     }
 }
