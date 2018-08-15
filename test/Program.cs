@@ -56,6 +56,8 @@ namespace test
             //obj.Add("NULL",null);
             //obj.Add("childobj", child);
             //obj.Add("arrayvalue", arr);
+            string s = "{\"student\":[{\"name\":\"Jim\",\"age\":8,\"goodboy\":true},{\"name\":\"Tom\",\"age\":10,\"goodboy\":false}]}";
+            Console.WriteLine("测试："+s);
             obj.Add("test", "{\"student\":[{\"name\":\"Jim\",\"age\":8,\"goodboy\":true},{\"name\":\"Tom\",\"age\":10,\"goodboy\":false}]}");
             JsonDocument doc=new JsonDocument();
             doc.Object=obj;
@@ -64,12 +66,14 @@ namespace test
             Console.WriteLine(val);
             Console.WriteLine();
             // string data = "{\"学生\":[{\"name\":\"小明\",\"age\":8},{\"\name\":\"Tom\",\"age\":10}]}";
-            string data = "{\"test\": \"{\"student\":[{\"name\":\"Jim\",\"age\":8,\"goodboy\":true},{\"name\":\"Tom\",\"age\":10,\"goodboy\":false}]}\"}";
-            doc = JsonDocument.FromString(data);
 
-            if(doc.IsObject())
+            string data =val;
+
+           JsonDocument d = JsonDocument.FromString(data);
+
+            if(d.IsObject())
             {
-                JsonObject jsobj = doc.Object;
+                JsonObject jsobj = d.Object;
                 foreach(string key in jsobj.Keys)
                 {
                     switch(jsobj[key].Valuetype)
@@ -81,8 +85,12 @@ namespace test
                             Console.WriteLine("key={0},value={1}",key,jsobj[key].ToInt());
                             break;
                         case JsonType.STRING:
-                            Console.WriteLine("key={0},value={1}",key,jsobj[key].ToString());
-                            break;
+                            {
+                                string ss =jsobj[key].ToString();
+                                Console.WriteLine("key={0},value={1}", key, jsobj[key].ToString());
+                                break;
+
+                            }
                         case JsonType.ARRAY:
                             foreach (JsonValue v in jsobj[key].ToArray())
                             {

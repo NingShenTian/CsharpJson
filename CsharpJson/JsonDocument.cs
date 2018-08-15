@@ -299,7 +299,7 @@ namespace CsharpJson
                         str.AppendFormat("\"{0}\":{1},", item.Key, item.Value.ToDouble());
                         break;
                     case JsonType.STRING:
-                        str.AppendFormat("\"{0}\":\"{1}\",", item.Key, item.Value.ToString());
+                        str.AppendFormat("\"{0}\":\"{1}\",", item.Key, item.Value.ToString().Replace("\"","\\\""));
                         break;
                     case JsonType.ARRAY:
                         str.AppendFormat("\"{0}\":{1},", item.Key, ToJsonString(item.Value.ToArray()));
@@ -341,7 +341,7 @@ namespace CsharpJson
                         str.AppendFormat("{0},", item.ToDouble());
                         break;
                     case JsonType.STRING:
-                        str.AppendFormat("\"{0}\",", item.ToString());
+                        str.AppendFormat("\"{0}\",", item.ToString().Replace("\"", "\\\""));
                         break;
                     case JsonType.ARRAY:
                         str.AppendFormat("{0},", ToJsonString(item.ToArray()));
@@ -480,12 +480,15 @@ namespace CsharpJson
             index++;
             for (; index < jsonstr.Length; ++index)
             {
-                char s = jsonstr[index];
                 switch (jsonstr[index])
                 {
                     case '"':
                         index++;
                         return str;
+                    case '\\':
+                        index++;
+                        str += jsonstr[index];
+                        break;
                     default:
                         str += jsonstr[index];
                         break;
