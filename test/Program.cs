@@ -32,10 +32,10 @@ namespace test
     {
         public static void Main(string[] args)
         {
-
             Test1();
             Test2();
             Test3();
+            Test4();
             Console.ReadLine();
         }
         /// <summary>
@@ -155,23 +155,42 @@ namespace test
                                 Console.WriteLine("key={0},value={1}", key, jsobj[key].ToString());
                                 break;
                             }
-                        case JsonType.ARRAY:
-                            foreach (JsonValue v in jsobj[key].ToArray())
-                            {
-                                switch (v.Valuetype)
-                                {
-                                    case JsonType.BOOL:
-                                        Console.WriteLine("key={0}", v.ToBool());
-                                        break;
-                                    case JsonType.NUMBER:
-                                        Console.WriteLine("key={0}", v.ToInt());
-                                        break;
-                                    case JsonType.STRING:
-                                        Console.WriteLine("key={0}", v.ToString());
-                                        break;
-                                }
-                            }
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// 测试对\的处理
+        /// </summary>
+        public static void Test4()
+        {
+            JsonObject obj = new JsonObject();
+            obj.Add("test", "\\hello\\");
+            JsonDocument doc = new JsonDocument();
+            doc.Object = obj;
+            string val = doc.ToJson();
+            Console.WriteLine("生成的Json字符串：");
+            Console.WriteLine(val);
+            JsonDocument d = JsonDocument.FromString(val);
+            if (d.IsObject())
+            {
+                JsonObject jsobj = d.Object;
+                foreach (string key in jsobj.Keys)
+                {
+                    switch (jsobj[key].Valuetype)
+                    {
+                        case JsonType.BOOL:
+                            Console.WriteLine("key={0},value={1}", key, jsobj[key].ToBool());
                             break;
+                        case JsonType.NUMBER:
+                            Console.WriteLine("key={0},value={1}", key, jsobj[key].ToInt());
+                            break;
+                        case JsonType.STRING:
+                            {
+                                string ss = jsobj[key].ToString();
+                                Console.WriteLine("key={0},value={1}", key, jsobj[key].ToString());
+                                break;
+                            }
                     }
                 }
             }

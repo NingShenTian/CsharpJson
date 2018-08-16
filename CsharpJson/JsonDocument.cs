@@ -299,7 +299,7 @@ namespace CsharpJson
                         str.AppendFormat("\"{0}\":{1},", item.Key, item.Value.ToDouble());
                         break;
                     case JsonType.STRING:
-                        str.AppendFormat("\"{0}\":\"{1}\",", item.Key, item.Value.ToString().Replace("\"","\\\""));
+                        str.AppendFormat("\"{0}\":\"{1}\",", item.Key, item.Value.ToString().Replace("\\", "\\\\").Replace("\"","\\\""));
                         break;
                     case JsonType.ARRAY:
                         str.AppendFormat("\"{0}\":{1},", item.Key, ToJsonString(item.Value.ToArray()));
@@ -341,7 +341,7 @@ namespace CsharpJson
                         str.AppendFormat("{0},", item.ToDouble());
                         break;
                     case JsonType.STRING:
-                        str.AppendFormat("\"{0}\",", item.ToString().Replace("\"", "\\\""));
+                        str.AppendFormat("\"{0}\",", item.ToString().Replace("\\","\\\\").Replace("\"", "\\\""));
                         break;
                     case JsonType.ARRAY:
                         str.AppendFormat("{0},", ToJsonString(item.ToArray()));
@@ -416,7 +416,7 @@ namespace CsharpJson
                         break;
                 }
             }
-            throw new FormatException("解析错误！");
+            throw new FormatException("解析错误,似乎不是一个完整Json！");
         }
         /// <summary>
         /// Gets the array.
@@ -486,7 +486,14 @@ namespace CsharpJson
                         index++;
                         return str;
                     case '\\':
-                        index++;
+                        if(index+1>=jsonstr.Length)
+                        {
+                            break;
+                        }
+                        if(jsonstr[index+1]=='"'|| jsonstr[index + 1] == '\\')
+                        {
+                            index++;
+                        }
                         str += jsonstr[index];
                         break;
                     default:
