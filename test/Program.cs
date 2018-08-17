@@ -36,6 +36,7 @@ namespace test
             Test2();
             Test3();
             Test4();
+            Test5();
             Console.ReadLine();
         }
         /// <summary>
@@ -194,6 +195,33 @@ namespace test
                     }
                 }
             }
+        }
+        /// <summary>
+        /// 测试对数字类型的处理
+        /// </summary>
+        public static void Test5()
+        {
+            double a = 1.87E+02;
+            JsonObject obj = new JsonObject();
+            obj.Add("num1", 1.87E+02);
+            obj.Add("num2", -10);
+            obj.Add("num3", -0.2);
+            obj.Add("num4", +1024.88);
+            
+            JsonDocument doc = new JsonDocument();
+            doc.Object = obj;
+            string val = doc.ToJson();
+            Console.WriteLine("生成的Json字符串：");
+            Console.WriteLine(val);
+            string data = "{\"num1\":187E+0.2,\"num2\":-10,\"num3\":-0.2,\"num4\":+1024.88}";
+            JsonDocument d =JsonDocument.FromString(data);
+            if(d.IsObject())
+            {
+                JsonObject o= d.Object;
+
+            }
+
+
         }
     }
 }
