@@ -395,7 +395,7 @@ namespace CsharpJson
                         break;
                     case 't':
                     case 'f':
-                        obj.Add(key, Getbool(ref index, strjson));
+                        obj.Add(key, GetBool(ref index, strjson));
                         break;
                     case 'n':
                         obj.Add(key,GetNull(ref index,strjson));
@@ -412,7 +412,7 @@ namespace CsharpJson
                         ++index;
                         return obj;
                     default:
-                        obj.Add(key, Getnumber(ref index, strjson));
+                        obj.Add(key, GetNumber(ref index, strjson));
                         break;
                 }
             }
@@ -446,7 +446,7 @@ namespace CsharpJson
                         break;
                     case 't':
                     case 'f':
-                        arr.Add(Getbool(ref index, strjson));
+                        arr.Add(GetBool(ref index, strjson));
                         break;
 					case 'n':
 						arr.Add(GetNull(ref index,strjson));
@@ -461,7 +461,7 @@ namespace CsharpJson
                         ++index;
                         return arr;
                     default:
-                        arr.Add(Getnumber(ref index, strjson));
+                        arr.Add(GetNumber(ref index, strjson));
                         break;
                 }
             }
@@ -509,7 +509,7 @@ namespace CsharpJson
         /// </summary>
         /// <param name="index">Index.</param>
         /// <param name="strjson">Strjson.</param>
-        static private JsonValue Getbool(ref int index, string strjson)
+        static private JsonValue GetBool(ref int index, string strjson)
         {
             string strbool = "";
             for (; index < strjson.Length; ++index)
@@ -542,7 +542,7 @@ namespace CsharpJson
         /// </summary>
         /// <param name="index">Index.</param>
         /// <param name="strjson">Strjson.</param>
-        static private JsonValue Getnumber(ref int index, string strjson)
+        static private JsonValue GetNumber(ref int index, string strjson)
         {
             string strnum = "";
             for (; index < strjson.Length; ++index)

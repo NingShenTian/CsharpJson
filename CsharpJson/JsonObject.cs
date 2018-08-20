@@ -210,7 +210,7 @@ namespace CsharpJson
         /// 返回指定key的value
         /// </summary>
         /// <param name="key">Key.</param>
-        public JsonValue value(string key)
+        public JsonValue Value(string key)
         {
             return this.items[key];
         }
