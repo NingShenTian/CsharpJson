@@ -83,10 +83,11 @@ namespace CsharpJson
         }
         /// <summary>
         /// Add the specified key and value.
-		/// 添加一个指定的键值对;异常：当key为null时引发异常
+		/// 添加一个指定的键值对
         /// </summary>
         /// <param name="key">Key.</param>
         /// <param name="value">Value.</param>
+        /// <exception cref="ArgumentNullException">当key为null时引发异常</exception>
         public void Add(string key, JsonValue value)
         {
             if (key == null)

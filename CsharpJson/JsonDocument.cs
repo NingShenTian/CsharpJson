@@ -168,6 +168,7 @@ namespace CsharpJson
         /// 序列化为字符串
         /// </summary>
         /// <returns></returns>
+        /// <exception cref="NullReferenceException">序列化对象为空引用</exception>
         public string ToJson()
         {
             if (Object != null)
@@ -220,6 +221,7 @@ namespace CsharpJson
         /// <returns>The Json.返回JsonDocument对象</returns>
         /// <param name="jsonstr">Jsonstr.Json字符串</param>
         /// <param name="encod">Encod.编码，默认使用当前默认编码</param>
+        /// <exception cref="NullReferenceException">Json字符串为null引用异常</exception>
         public static JsonDocument FromString(string jsonstr, JsonEncoding encod = JsonEncoding.Default)
         {
             JsonDocument doc = new JsonDocument();
@@ -361,6 +363,7 @@ namespace CsharpJson
         /// <returns>The object.</returns>
         /// <param name="index">Index.</param>
         /// <param name="strjson">Strjson.</param>
+        /// <exception cref="FormatException">Json格式错误异常</exception>
         static private JsonValue GetObject(ref int index, string strjson)
         {
             index++;
@@ -474,6 +477,7 @@ namespace CsharpJson
         /// <returns>The string.</returns>
         /// <param name="index">Index.</param>
         /// <param name="jsonstr">Jsonstr.</param>
+        /// <exception cref="FormatException">Json格式错误异常</exception>
         static private string GetString(ref int index, string jsonstr)
         {
             string str = "";
@@ -509,6 +513,7 @@ namespace CsharpJson
         /// </summary>
         /// <param name="index">Index.</param>
         /// <param name="strjson">Strjson.</param>
+        /// <exception cref="FormatException">Json格式错误异常</exception>
         static private JsonValue GetBool(ref int index, string strjson)
         {
             string strbool = "";
@@ -542,6 +547,7 @@ namespace CsharpJson
         /// </summary>
         /// <param name="index">Index.</param>
         /// <param name="strjson">Strjson.</param>
+        /// <exception cref="FormatException">Json格式错误异常</exception>
         static private JsonValue GetNumber(ref int index, string strjson)
         {
             string strnum = "";
@@ -574,6 +580,7 @@ namespace CsharpJson
         /// <returns>The null.</returns>
         /// <param name="index">Index.</param>
         /// <param name="strjson">Strjson.</param>
+        /// <exception cref="FormatException">Json格式错误异常</exception>
         static private JsonValue GetNull(ref int index,string strjson)
         {
             string strnull = "";
