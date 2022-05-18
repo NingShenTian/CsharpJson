@@ -2,7 +2,7 @@
 //  JsonValue.cs
 //
 //  Author:
-//       田小宁 <springrain1991@hotmail.com>
+//       <springrain1991@hotmail.com>
 //
 //  Copyright (c) 2017 田小宁
 //
